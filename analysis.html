@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CAIW 2026 — Workshop Planning</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+:root {
+  --g:#2e7d52; --gl:#4a9a6f; --gx:#e8f5ee; --gxx:#f4faf7;
+  --bg:#f8faf9; --text:#1a2e22; --muted:#5a7066; --border:#c8ddd2;
+  --s1:#1a6b8a; --s2:#7a4a1e; --s3:#2e5d7a; --s4:#4a2e7a;
+}
+body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+header { background:var(--g); color:#fff; padding:2.5rem 2rem 2rem; }
+header h1 { font-size:1.8rem; font-weight:700; }
+header p  { opacity:.85; margin-top:.4rem; }
+.badge { display:inline-block; background:rgba(255,255,255,.18); border-radius:20px; padding:.2rem .8rem; font-size:.85rem; margin-top:.6rem; }
+main { max-width:1100px; margin:0 auto; padding:2rem 1.5rem 5rem; }
+h2 { color:var(--g); font-size:1.3rem; margin:2.5rem 0 1rem; padding-bottom:.4rem; border-bottom:2px solid var(--border); }
+h3 { font-size:.88rem; margin:1.4rem 0 .5rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; font-weight:700; }
+.stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:.8rem; margin:1rem 0; }
+.stat-card { background:#fff; border:1px solid var(--border); border-radius:10px; padding:1rem; text-align:center; }
+.stat-card .num { font-size:2rem; font-weight:700; color:var(--g); }
+.stat-card .lbl { font-size:.8rem; color:var(--muted); margin-top:.15rem; }
+.charts-row { display:grid; grid-template-columns:1fr 1.8fr; gap:1.2rem; margin:1rem 0; }
+.chart-box { background:#fff; border:1px solid var(--border); border-radius:10px; padding:1.3rem; }
+.chart-box canvas { max-height:260px; }
+.day { display:grid; gap:.6rem; margin:1.2rem 0; }
+.slot { display:grid; grid-template-columns:120px 1fr; gap:.8rem; background:#fff; border:1px solid var(--border); border-radius:8px; padding:.8rem 1rem; }
+.slot .time { font-weight:700; color:var(--g); font-size:.93rem; padding-top:.1rem; }
+.slot.break { background:var(--gxx); border-color:#b8d4c0; }
+.slot.lunch { background:#fffbf0; border-color:#e8d9a0; }
+.slot .s-title { font-weight:700; font-size:1rem; }
+.slot .s-desc  { font-size:.85rem; color:var(--muted); margin-top:.2rem; }
+.slot.s1 { border-left:4px solid var(--s1); } .slot.s1 .s-title { color:var(--s1); }
+.slot.s2 { border-left:4px solid var(--s2); } .slot.s2 .s-title { color:var(--s2); }
+.slot.s3 { border-left:4px solid var(--s3); } .slot.s3 .s-title { color:var(--s3); }
+.slot.s4 { border-left:4px solid var(--s4); } .slot.s4 .s-title { color:var(--s4); }
+.session-card { border-radius:12px; border:1px solid var(--border); margin:2rem 0; overflow:hidden; }
+.sc-head { padding:1.1rem 1.4rem; color:#fff; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem; }
+.sc-head h3 { color:#fff; text-transform:none; letter-spacing:0; font-size:1.1rem; font-weight:700; margin:0; }
+.sc-head .votes { font-size:.82rem; opacity:.85; white-space:nowrap; }
+.sc1 .sc-head { background:var(--s1); } .sc2 .sc-head { background:var(--s2); }
+.sc3 .sc-head { background:var(--s3); } .sc4 .sc-head { background:var(--s4); }
+.sc-body { padding:1.2rem 1.4rem; background:#fff; }
+table { width:100%; border-collapse:collapse; margin:.6rem 0 1.2rem; border:1px solid var(--border); border-radius:8px; overflow:hidden; font-size:.85rem; }
+thead th { background:rgba(0,0,0,.06); padding:.55rem .9rem; text-align:left; font-size:.82rem; font-weight:600; }
+tbody tr:nth-child(even) { background:var(--gxx); }
+tbody td { padding:.5rem .9rem; vertical-align:top; border-bottom:1px solid var(--border); }
+.name-cell { font-weight:600; white-space:nowrap; }
+.aff-cell  { color:var(--muted); font-size:.79rem; }
+.panelist-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:.7rem; margin:.6rem 0 1.2rem; }
+.panelist { background:var(--gxx); border:1px solid var(--border); border-radius:8px; padding:.8rem 1rem; }
+.panelist .pname { font-weight:700; font-size:.92rem; }
+.panelist .paff  { font-size:.78rem; color:var(--muted); }
+.panelist .prole { font-size:.82rem; margin-top:.3rem; }
+.s-badge { background:#c07a20; color:#fff; border-radius:10px; padding:.05rem .4rem; font-size:.7rem; margin-left:.3rem; vertical-align:middle; }
+.callout { background:var(--gxx); border-left:4px solid var(--g); border-radius:0 8px 8px 0; padding:.9rem 1.1rem; margin:.8rem 0; font-size:.9rem; }
+@media(max-width:700px){ .charts-row{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Canadian Astronomy Instrumentation Workshop 2026 — Planning Document</h1>
+  <p>Internal use &mdash; generated 6 May 2026</p>
+  <span class="badge">409 total registrants &nbsp;|&nbsp; 188 attending (Yes + Maybe) &nbsp;|&nbsp; 72 confirmed &nbsp;|&nbsp; June 12, Campus MIL, Montréal</span>
+</header>
+<main>
+
+<h2>&#128202; Attendance Overview</h2>
+<div class="stat-grid">
+  <div class="stat-card"><div class="num">409</div><div class="lbl">Total registrations</div></div>
+  <div class="stat-card"><div class="num" style="color:#2e7d52">72</div><div class="lbl">Confirmed (Yes)</div></div>
+  <div class="stat-card"><div class="num" style="color:#c07a20">116</div><div class="lbl">Possible (Maybe)</div></div>
+  <div class="stat-card"><div class="num" style="color:#888">187</div><div class="lbl">Not attending</div></div>
+  <div class="stat-card"><div class="num">109</div><div class="lbl">Students (Yes/Maybe)</div></div>
+  <div class="stat-card"><div class="num">79</div><div class="lbl">Non-students (Yes/Maybe)</div></div>
+</div>
+<div class="charts-row">
+  <div class="chart-box">
+    <strong style="font-size:.9rem">RSVP breakdown</strong>
+    <canvas id="chartAttend"></canvas>
+  </div>
+  <div class="chart-box">
+    <strong style="font-size:.9rem">Workshop themes — votes from Yes+Maybe attendees</strong>
+    <canvas id="chartThemes"></canvas>
+  </div>
+</div>
+
+<h2>&#128336; Proposed Schedule — June 12, 2026</h2>
+<div class="callout">4 sessions &times; 90 min — each: <strong>~45 min presentations</strong> (3–4 &times; ~10 min talks) then <strong>panel + open discussion</strong>. Format is discussion-heavy; short talks serve as catalysts.</div>
+<div class="day">
+  <div class="slot"><span class="time">8:45</span><div><div class="s-title">Welcome address</div><div class="s-desc">Organizers. Overview of the day, code of conduct. (15 min)</div></div></div>
+  <div class="slot s1"><span class="time">9:00 – 10:30</span><div><div class="s-title">Session 1 — Space-based instrumentation</div><div class="s-desc">Canadian-led missions &amp; international partnerships &middot; 127 votes</div></div></div>
+  <div class="slot break"><span class="time">10:30 – 10:50</span><div><div class="s-title">Coffee break</div></div></div>
+  <div class="slot s2"><span class="time">10:50 – 12:20</span><div><div class="s-title">Session 2 — Canada's role in VLOT instrumentation</div><div class="s-desc">E-ELT vs TMT, ESO access, instrument strategy &middot; 71 votes</div></div></div>
+  <div class="slot lunch"><span class="time">12:20 – 13:30</span><div><div class="s-title">Lunch (reserved restaurant)</div></div></div>
+  <div class="slot s3"><span class="time">13:30 – 15:00</span><div><div class="s-title">Session 3 — Data analysis &amp; valorisation</div><div class="s-desc">Pipelines, post-first-light support, open data, CADC, HQP training &middot; 88 votes</div></div></div>
+  <div class="slot break"><span class="time">15:00 – 15:20</span><div><div class="s-title">Coffee break</div></div></div>
+  <div class="slot s4"><span class="time">15:20 – 16:50</span><div><div class="s-title">Session 4 — Canada-wide framework for instrumentation teams</div><div class="s-desc">Governance, HQP, university–NRC–industry collaboration, support astronomers &middot; 77 votes</div></div></div>
+  <div class="slot break"><span class="time">16:50 – 17:15</span><div><div class="s-title">Wrap-up &amp; action items</div><div class="s-desc">One spokesperson per session. Assign post-meeting champions per theme. Next steps.</div></div></div>
+</div>
+
+<!-- SESSION 1 -->
+<h2>Session 1 &mdash; Space-based instrumentation <small style="font-weight:400">(127 votes)</small></h2>
+<div class="session-card sc1">
+<div class="sc-head"><h3>&#128752; Space-based instrumentation — Canadian-led &amp; international partnerships</h3><span class="votes">9:00 – 10:30 &nbsp;|&nbsp; 90 min</span></div>
+<div class="sc-body">
+<h3>Speakers</h3>
+<table><thead><tr><th>Name</th><th>Affiliation</th><th>Topic</th><th style="white-space:nowrap">Min</th></tr></thead><tbody>
+<tr><td class="name-cell">Stanimir Metchev</td><td class="aff-cell">University of Western Ontario</td><td>The POET Space Mission - Canadian Leadership in Exoplanet Exploration</td><td style="text-align:center;color:var(--muted);font-size:.82rem">10</td></tr>
+<tr><td class="name-cell">Christian Marois</td><td class="aff-cell">NRC Herzberg</td><td>A Canadian exoplanet imaging spectrograph for HWO</td><td style="text-align:center;color:var(--muted);font-size:.82rem">10</td></tr>
+<tr><td class="name-cell">Frederic Grandmont</td><td class="aff-cell">ABB</td><td>Pleasure and pain of building astronomy (or other) space instrument in industry.</td><td style="text-align:center;color:var(--muted);font-size:.82rem">10</td></tr>
+<tr><td class="name-cell">Charles Lee</td><td class="aff-cell">University of Manitoba</td><td>CubeSat academic programs and their potential role in Space Astronomy</td><td style="text-align:center;color:var(--muted);font-size:.82rem">5</td></tr>
+<tr><td class="name-cell">Nick Cowan</td><td class="aff-cell">McGill University</td><td>Canadian participation in the Ariel mission</td><td style="text-align:center;color:var(--muted);font-size:.82rem">5</td></tr>
+<tr><td class="name-cell">Julie Halverson</td><td class="aff-cell">TBD</td><td>XRISM X-ray Space Telescope</td><td style="text-align:center;color:var(--muted);font-size:.82rem">5</td></tr>
+</tbody></table>
+<h3>Suggested panelists</h3>
+<div class="panelist-grid">
+<div class="panelist"><div class="pname">Frederic Grandmont</div><div class="paff">ABB</div><div class="prole">TBD</div></div>
+<div class="panelist"><div class="pname">Panelist 2</div><div class="paff">TBD</div><div class="prole">TBD</div></div>
+<div class="panelist"><div class="pname">Panelist 3</div><div class="paff">TBD</div><div class="prole">TBD</div></div>
+<div class="panelist"><div class="pname">Panelist 4</div><div class="paff">TBD</div><div class="prole">TBD</div></div>
+</div>
+<h3>Questions &amp; expectations from participants</h3>
+<table><thead><tr><th>Name</th><th>Affiliation</th><th>What they want to learn / discuss</th></tr></thead><tbody>
+<tr><td class="name-cell">Étienne Artigau</td><td class="aff-cell">Université de Montréal</td><td>Comprendre ce que les autres font à travers le Canada comme instrumentation</td></tr>
+<tr><td class="name-cell">Jenny Atwood</td><td class="aff-cell">National Research Council Herzberg Astronomy </td><td>Future instrumentation ideas, University/HAA collaborations, technology research (increasing TRL), implementing pathfinders</td></tr>
+<tr><td class="name-cell">Ryan Cloutier</td><td class="aff-cell">McMaster University</td><td>An articulation of community needs/wants.</td></tr>
+<tr><td class="name-cell">Nicolas Cowan</td><td class="aff-cell">McGill</td><td>Identify latent synergies between different instrumentation and reduction pipeline groups across Canada. Can we do more with less?  Can we organize in a more sustainable way?</td></tr>
+<tr><td class="name-cell">Olivier Daigle</td><td class="aff-cell">Nuvu Cameras</td><td>Développer la collaboration entre l&#x27;industrie et le milieu universitaire</td></tr>
+<tr><td class="name-cell">James Di Francesco</td><td class="aff-cell">National Research Council of Canada</td><td>Clarity on Canada&#x27;s Optical/IR observatory direction.</td></tr>
+<tr><td class="name-cell">René Doyon</td><td class="aff-cell">Université de Montréal</td><td>Simulate more collaborations within the Canadian astronomical community related to astronomical instrumentation</td></tr>
+<tr><td class="name-cell">Jean Dupuis</td><td class="aff-cell">Agence spatiale canadienne</td><td>more information about the community interest in space astronomy projects</td></tr>
+<tr><td class="name-cell">Laura Fissel</td><td class="aff-cell">Queen&#x27;s University</td><td>It would be great to discuss Canada-wide networks for instrumentation, space-based instrumentation (perhaps including PRIMA?), opportunities for training HQP, and to see what other groups are working on.</td></tr>
+<tr><td class="name-cell">Frederic Grandmont</td><td class="aff-cell">ABB</td><td>Get a feel for what is coming ahead</td></tr>
+<tr><td class="name-cell">Gareth Jones</td><td class="aff-cell">University of Manitoba</td><td>Information of current state of Canada&#x27;s contribution to current and upcoming instrumentation</td></tr>
+<tr><td class="name-cell">Lison Malo</td><td class="aff-cell">Université de Montréal / Observatoire du Mont</td><td>1) Identifier des personnes responsables (ou comité) de chaque thème qui devront faire le suivi post-rencontre, 2) prioriser les demandes vers le gouvernement</td></tr>
+<tr><td class="name-cell">Christian Marois</td><td class="aff-cell">National Research Council of Canada</td><td>Discussions/collaborations for VLOT instruments, strategies for E-ELT vs TMT, and space projects.</td></tr>
+<tr><td class="name-cell">Alan McConnachie</td><td class="aff-cell">NRC Herzberg</td><td>To better understand the interests and priorities of other instrument groups in Canada</td></tr>
+<tr><td class="name-cell">Stanimir Metchev</td><td class="aff-cell">Western University</td><td>Synthesize interests in astronomical instrumentation in potential paths toward future development proposals.</td></tr>
+<tr><td class="name-cell">Nathalie N.-Q. Ouellette</td><td class="aff-cell">Université de Montréal</td><td>Learning about other instrumentation projects; brainstorming with the community on better support for instrument/mission development</td></tr>
+<tr><td class="name-cell">Zoran Ninkov</td><td class="aff-cell">Rochester Institute of Technology</td><td>Hear about what is happening across the country</td></tr>
+<tr><td class="name-cell">André Villemaire</td><td class="aff-cell">ABB inc.</td><td>C&#x27;est ma première fois, je n&#x27;ai pas d&#x27;attente particulière, je veux me familiaritser</td></tr>
+<tr><td class="name-cell">Alexis Hill</td><td class="aff-cell">NRC Herzberg</td><td>Community discussion on Canadian astronomy directions</td></tr>
+<tr><td class="name-cell">Mohan Agrawal <span class="s-badge">student</span></td><td class="aff-cell">McGill University</td><td>Learning about resources available in Canada for designing and testing new mission concepts.</td></tr>
+<tr><td class="name-cell">Mayukh Bagchi <span class="s-badge">student</span></td><td class="aff-cell">Queen&#x27;s University</td><td>Mostly networking, getting a sense of current instrumentation landscape and where it is headed.</td></tr>
+<tr><td class="name-cell">Nicholas Clark <span class="s-badge">student</span></td><td class="aff-cell">Western University</td><td>to learn more about Canada&#x27;s role in instrumentation on the international stage</td></tr>
+</tbody></table>
+</div></div>
+
+<!-- SESSION 2 -->
+<h2>Session 2 &mdash; Canada's role in VLOT instrumentation <small style="font-weight:400">(71 votes)</small></h2>
+<div class="session-card sc2">
+<div class="sc-head"><h3>&#127462;&#127464; Canada's role in Very Large Optical Telescope instrumentation</h3><span class="votes">10:50 – 12:20 &nbsp;|&nbsp; 90 min</span></div>
+<div class="sc-body">
+<h3>Speakers</h3>
+<table><thead><tr><th>Name</th><th>Affiliation</th><th>Topic</th><th style="white-space:nowrap">Min</th></tr></thead><tbody>
+<tr><td class="name-cell">Viktor Khalack</td><td class="aff-cell">Université de Moncton</td><td>Abundance analysis and magnetic field measurements based on the high-resolution spectra</td><td style="text-align:center;color:var(--muted);font-size:.82rem">5</td></tr>
+<tr><td class="name-cell">Alan McConnachie</td><td class="aff-cell">NRC Herzberg</td><td>Technology Roadmaps at HAA</td><td style="text-align:center;color:var(--muted);font-size:.82rem">10</td></tr>
+</tbody></table>
+<h3>Suggested panelists</h3>
+<div class="panelist-grid">
+<div class="panelist"><div class="pname">Alan McConnachie</div><div class="paff">NRC Herzberg</div><div class="prole">NRC-HAA technology roadmaps; Canada&#x27;s role in VLOT instrumentation.</div></div>
+<div class="panelist"><div class="pname">Panelist 2</div><div class="paff">TBD</div><div class="prole">TBD</div></div>
+<div class="panelist"><div class="pname">Panelist 3</div><div class="paff">TBD</div><div class="prole">TBD</div></div>
+<div class="panelist"><div class="pname">Panelist 4</div><div class="paff">TBD</div><div class="prole">TBD</div></div>
+</div>
+<h3>Questions &amp; expectations from participants</h3>
+<table><thead><tr><th>Name</th><th>Affiliation</th><th>What they want to learn / discuss</th></tr></thead><tbody>
+<tr><td class="name-cell">Étienne Artigau</td><td class="aff-cell">Université de Montréal</td><td>Comprendre ce que les autres font à travers le Canada comme instrumentation</td></tr>
+<tr><td class="name-cell">Jenny Atwood</td><td class="aff-cell">National Research Council Herzberg Astronomy </td><td>Future instrumentation ideas, University/HAA collaborations, technology research (increasing TRL), implementing pathfinders</td></tr>
+<tr><td class="name-cell">Ryan Cloutier</td><td class="aff-cell">McMaster University</td><td>An articulation of community needs/wants.</td></tr>
+<tr><td class="name-cell">Nicolas Cowan</td><td class="aff-cell">McGill</td><td>Identify latent synergies between different instrumentation and reduction pipeline groups across Canada. Can we do more with less?  Can we organize in a more sustainable way?</td></tr>
+<tr><td class="name-cell">James Di Francesco</td><td class="aff-cell">National Research Council of Canada</td><td>Clarity on Canada&#x27;s Optical/IR observatory direction.</td></tr>
+<tr><td class="name-cell">René Doyon</td><td class="aff-cell">Université de Montréal</td><td>Simulate more collaborations within the Canadian astronomical community related to astronomical instrumentation</td></tr>
+<tr><td class="name-cell">Wesley Fraser</td><td class="aff-cell">Herzberg Astronomy and Astrophysics Research </td><td>Good discussion, maybe some understanding of our possible role in ESO</td></tr>
+<tr><td class="name-cell">Frederic Grandmont</td><td class="aff-cell">ABB</td><td>Get a feel for what is coming ahead</td></tr>
+<tr><td class="name-cell">Lison Malo</td><td class="aff-cell">Université de Montréal / Observatoire du Mont</td><td>1) Identifier des personnes responsables (ou comité) de chaque thème qui devront faire le suivi post-rencontre, 2) prioriser les demandes vers le gouvernement</td></tr>
+<tr><td class="name-cell">Christian Marois</td><td class="aff-cell">National Research Council of Canada</td><td>Discussions/collaborations for VLOT instruments, strategies for E-ELT vs TMT, and space projects.</td></tr>
+<tr><td class="name-cell">Alan McConnachie</td><td class="aff-cell">NRC Herzberg</td><td>To better understand the interests and priorities of other instrument groups in Canada</td></tr>
+<tr><td class="name-cell">Stanimir Metchev</td><td class="aff-cell">Western University</td><td>Synthesize interests in astronomical instrumentation in potential paths toward future development proposals.</td></tr>
+<tr><td class="name-cell">Nathalie N.-Q. Ouellette</td><td class="aff-cell">Université de Montréal</td><td>Learning about other instrumentation projects; brainstorming with the community on better support for instrument/mission development</td></tr>
+<tr><td class="name-cell">Kim Venn</td><td class="aff-cell">Univ. of Victoria</td><td>Contribute to next generation instruments, teams, and good governance.</td></tr>
+<tr><td class="name-cell">André Villemaire</td><td class="aff-cell">ABB inc.</td><td>C&#x27;est ma première fois, je n&#x27;ai pas d&#x27;attente particulière, je veux me familiaritser</td></tr>
+<tr><td class="name-cell">Alexis Hill</td><td class="aff-cell">NRC Herzberg</td><td>Community discussion on Canadian astronomy directions</td></tr>
+<tr><td class="name-cell">Nicholas Clark <span class="s-badge">student</span></td><td class="aff-cell">Western University</td><td>to learn more about Canada&#x27;s role in instrumentation on the international stage</td></tr>
+<tr><td class="name-cell">Andre Fogal <span class="s-badge">student</span></td><td class="aff-cell">University of Victoria</td><td>I would like to network with other Canadians working in instrumentation and learn what other projects are underway.</td></tr>
+<tr><td class="name-cell">Marie-Joëlle Gingras <span class="s-badge">student</span></td><td class="aff-cell">University of Waterloo, Waterloo Centre for A</td><td>Learning more about instrumentation</td></tr>
+<tr><td class="name-cell">Kaitlyn Hessel <span class="s-badge">student</span></td><td class="aff-cell">University of Victoria</td><td>To get to meet other instrumentation astronomers in Canada and learn about how we can collaborate to increase Canada&#x27;s position in the field.</td></tr>
+<tr><td class="name-cell">Artiom Matvei <span class="s-badge">student</span></td><td class="aff-cell">Université de Montréal</td><td>Meeting with potential collaborators working on instrumentation</td></tr>
+<tr><td class="name-cell">Ramadilen Moodelly <span class="s-badge">student</span></td><td class="aff-cell">McMaster University</td><td>I&#x27;m a theorist working in planet formation. The validity of my simulations relies a lot on observations and hence on the capabilities of the different telescopes. So I want to learn how instruments are expected to improve within the next decade. Furthremore, I&#x27;m curious about the</td></tr>
+</tbody></table>
+</div></div>
+
+<!-- SESSION 3 -->
+<h2>Session 3 &mdash; Data analysis &amp; valorisation <small style="font-weight:400">(88 votes)</small></h2>
+<div class="session-card sc3">
+<div class="sc-head"><h3>&#128190; Data analysis &amp; valorisation — post-first-light support</h3><span class="votes">13:30 – 15:00 &nbsp;|&nbsp; 90 min</span></div>
+<div class="sc-body">
+<h3>Speakers</h3>
+<table><thead><tr><th>Name</th><th>Affiliation</th><th>Topic</th><th style="white-space:nowrap">Min</th></tr></thead><tbody>
+<tr><td class="name-cell">Ketan Sand, Mike Cichonski</td><td class="aff-cell">TBD</td><td>CanDIAPL - Enabling Open-Source Data-Intensive, Multi-Messenger Astronomy at Scale</td><td style="text-align:center;color:var(--muted);font-size:.82rem">5</td></tr>
+<tr><td class="name-cell">Jade Yeung</td><td class="aff-cell">TBD</td><td>An Exposure Time Calculator for CASTOR&#x27;s UVMOS</td><td style="text-align:center;color:var(--muted);font-size:.82rem">5</td></tr>
+<tr><td class="name-cell">Charles Lee</td><td class="aff-cell">University of Manitoba</td><td>Simulation of Digital Micromirror Devices for Multi-Object Spectroscopy on CASTOR</td><td style="text-align:center;color:var(--muted);font-size:.82rem">5</td></tr>
+<tr><td class="name-cell">TBD</td><td class="aff-cell">TBD</td><td>TBD</td><td style="text-align:center;color:var(--muted);font-size:.82rem">10</td></tr>
+</tbody></table>
+<h3>Suggested panelists</h3>
+<div class="panelist-grid">
+<div class="panelist"><div class="pname">Panelist 1</div><div class="paff">TBD</div><div class="prole">TBD</div></div>
+<div class="panelist"><div class="pname">Panelist 2</div><div class="paff">TBD</div><div class="prole">TBD</div></div>
+<div class="panelist"><div class="pname">Panelist 3</div><div class="paff">TBD</div><div class="prole">TBD</div></div>
+<div class="panelist"><div class="pname">Panelist 4</div><div class="paff">TBD</div><div class="prole">TBD</div></div>
+</div>
+<h3>Questions &amp; expectations from participants</h3>
+<table><thead><tr><th>Name</th><th>Affiliation</th><th>What they want to learn / discuss</th></tr></thead><tbody>
+<tr><td class="name-cell">Étienne Artigau</td><td class="aff-cell">Université de Montréal</td><td>Comprendre ce que les autres font à travers le Canada comme instrumentation</td></tr>
+<tr><td class="name-cell">Jorge Karolt Barrera Ballesteros</td><td class="aff-cell">Université de Montreal</td><td>learn about the Canadian data centers as well as the participation of Canada in large surveys such as SKA and others</td></tr>
+<tr><td class="name-cell">Ryan Cloutier</td><td class="aff-cell">McMaster University</td><td>An articulation of community needs/wants.</td></tr>
+<tr><td class="name-cell">Nicolas Cowan</td><td class="aff-cell">McGill</td><td>Identify latent synergies between different instrumentation and reduction pipeline groups across Canada. Can we do more with less?  Can we organize in a more sustainable way?</td></tr>
+<tr><td class="name-cell">James Di Francesco</td><td class="aff-cell">National Research Council of Canada</td><td>Clarity on Canada&#x27;s Optical/IR observatory direction.</td></tr>
+<tr><td class="name-cell">René Doyon</td><td class="aff-cell">Université de Montréal</td><td>Simulate more collaborations within the Canadian astronomical community related to astronomical instrumentation</td></tr>
+<tr><td class="name-cell">Marie-Lou Gendron-Marsolais</td><td class="aff-cell">Université Laval</td><td>discussions, state of current facilities canada is involved in, ways to contribute</td></tr>
+<tr><td class="name-cell">Lison Malo</td><td class="aff-cell">Université de Montréal / Observatoire du Mont</td><td>1) Identifier des personnes responsables (ou comité) de chaque thème qui devront faire le suivi post-rencontre, 2) prioriser les demandes vers le gouvernement</td></tr>
+<tr><td class="name-cell">Anna Ordog</td><td class="aff-cell">University of Western Ontario</td><td>I don&#x27;t have a lot of background in this, so I would just be interested to learn what others have been thinking about.</td></tr>
+<tr><td class="name-cell">Michael Barth <span class="s-badge">student</span></td><td class="aff-cell">University of Montreal</td><td>Learning more about plans to handle large datasets from next-generation radio interferometers.</td></tr>
+<tr><td class="name-cell">Lucas da Conceicao <span class="s-badge">student</span></td><td class="aff-cell">University of Manitoba</td><td>Tutorials on how the instruments work, HANDS ON data reduction, hands on data analyses</td></tr>
+<tr><td class="name-cell">Marie-Joëlle Gingras <span class="s-badge">student</span></td><td class="aff-cell">University of Waterloo, Waterloo Centre for A</td><td>Learning more about instrumentation</td></tr>
+<tr><td class="name-cell">Pénélope Glasman <span class="s-badge">student</span></td><td class="aff-cell">Université Laval</td><td>I would like an update on the current state of instrumentation in Quebec and Canada, as well as information on the next steps for Canadian instrumentation.</td></tr>
+<tr><td class="name-cell">Kaitlyn Hessel <span class="s-badge">student</span></td><td class="aff-cell">University of Victoria</td><td>To get to meet other instrumentation astronomers in Canada and learn about how we can collaborate to increase Canada&#x27;s position in the field.</td></tr>
+<tr><td class="name-cell">Charles Lee <span class="s-badge">student</span></td><td class="aff-cell">University of Manitoba</td><td>Mostly just meeting other instrumentation people across the country</td></tr>
+<tr><td class="name-cell">Michaël Lévesque <span class="s-badge">student</span></td><td class="aff-cell">Université de Montréal</td><td>I want to learn more about the statistical method made to reduce data between the observations and the time they are made available to research teams.</td></tr>
+<tr><td class="name-cell">Ramadilen Moodelly <span class="s-badge">student</span></td><td class="aff-cell">McMaster University</td><td>I&#x27;m a theorist working in planet formation. The validity of my simulations relies a lot on observations and hence on the capabilities of the different telescopes. So I want to learn how instruments are expected to improve within the next decade. Furthremore, I&#x27;m curious about the</td></tr>
+<tr><td class="name-cell">Parisa Nozari <span class="s-badge">student</span></td><td class="aff-cell">Queen&#x27;s University</td><td>I will expect to learn about the field and what instrument are currently used and what are the opportunities for young professionals astronomers to get involve in some projects after being graduated from phd</td></tr>
+<tr><td class="name-cell">Tahere Parto <span class="s-badge">student</span></td><td class="aff-cell">Memorial University of Newfoundland</td><td>To gain knowledge about ongoing and future work or missions, and potential contributions.</td></tr>
+<tr><td class="name-cell">Olivia Pereira <span class="s-badge">student</span></td><td class="aff-cell">Université de Montréal</td><td>Broaden my understanding of instrumentation from the perspective of an observational/data-focused astronomer.</td></tr>
+<tr><td class="name-cell">Sophia Rubens <span class="s-badge">student</span></td><td class="aff-cell">McGill University</td><td>I do not work with optical/IR/UV/x-ray/gamma-ray instruments or data, so I would mostly be interested in attending if there were CHIME/CHORD-geared activities. I would be eager to develop better intuition for radio calibration.</td></tr>
+<tr><td class="name-cell">Avidaan Srivastava <span class="s-badge">student</span></td><td class="aff-cell">Université de Montréal</td><td>Insight into current and future plans of Canada</td></tr>
+</tbody></table>
+</div></div>
+
+<!-- SESSION 4 -->
+<h2>Session 4 &mdash; Canada-wide framework for instrumentation teams <small style="font-weight:400">(77 votes)</small></h2>
+<div class="session-card sc4">
+<div class="sc-head"><h3>&#127968; Canada-wide framework to support instrumentation teams</h3><span class="votes">15:20 – 16:50 &nbsp;|&nbsp; 90 min</span></div>
+<div class="sc-body">
+<h3>Speakers</h3>
+<table><thead><tr><th>Name</th><th>Affiliation</th><th>Topic</th><th style="white-space:nowrap">Min</th></tr></thead><tbody>
+<tr><td class="name-cell">TBD</td><td class="aff-cell">TBD</td><td>TBD</td><td style="text-align:center;color:var(--muted);font-size:.82rem">10</td></tr>
+</tbody></table>
+<h3>Suggested panelists</h3>
+<div class="panelist-grid">
+<div class="panelist"><div class="pname">René Doyon</div><div class="paff">Université de Montréal</div><div class="prole">SPIRou, NIRPS, ANDES, NIRISS, and UdeM instrumentation program — broad view of Canadian instrument development.</div></div>
+<div class="panelist"><div class="pname">Panelist 2</div><div class="paff">TBD</div><div class="prole">TBD</div></div>
+<div class="panelist"><div class="pname">Panelist 3</div><div class="paff">TBD</div><div class="prole">TBD</div></div>
+<div class="panelist"><div class="pname">Panelist 4</div><div class="paff">TBD</div><div class="prole">TBD</div></div>
+</div>
+<h3>Questions &amp; expectations from participants</h3>
+<table><thead><tr><th>Name</th><th>Affiliation</th><th>What they want to learn / discuss</th></tr></thead><tbody>
+<tr><td class="name-cell">Étienne Artigau</td><td class="aff-cell">Université de Montréal</td><td>Comprendre ce que les autres font à travers le Canada comme instrumentation</td></tr>
+<tr><td class="name-cell">Jenny Atwood</td><td class="aff-cell">National Research Council Herzberg Astronomy </td><td>Future instrumentation ideas, University/HAA collaborations, technology research (increasing TRL), implementing pathfinders</td></tr>
+<tr><td class="name-cell">Nicolas Cowan</td><td class="aff-cell">McGill</td><td>Identify latent synergies between different instrumentation and reduction pipeline groups across Canada. Can we do more with less?  Can we organize in a more sustainable way?</td></tr>
+<tr><td class="name-cell">Olivier Daigle</td><td class="aff-cell">Nuvu Cameras</td><td>Développer la collaboration entre l&#x27;industrie et le milieu universitaire</td></tr>
+<tr><td class="name-cell">René Doyon</td><td class="aff-cell">Université de Montréal</td><td>Simulate more collaborations within the Canadian astronomical community related to astronomical instrumentation</td></tr>
+<tr><td class="name-cell">Laura Fissel</td><td class="aff-cell">Queen&#x27;s University</td><td>It would be great to discuss Canada-wide networks for instrumentation, space-based instrumentation (perhaps including PRIMA?), opportunities for training HQP, and to see what other groups are working on.</td></tr>
+<tr><td class="name-cell">Marie-Lou Gendron-Marsolais</td><td class="aff-cell">Université Laval</td><td>discussions, state of current facilities canada is involved in, ways to contribute</td></tr>
+<tr><td class="name-cell">Frederic Grandmont</td><td class="aff-cell">ABB</td><td>Get a feel for what is coming ahead</td></tr>
+<tr><td class="name-cell">Lison Malo</td><td class="aff-cell">Université de Montréal / Observatoire du Mont</td><td>1) Identifier des personnes responsables (ou comité) de chaque thème qui devront faire le suivi post-rencontre, 2) prioriser les demandes vers le gouvernement</td></tr>
+<tr><td class="name-cell">Christian Marois</td><td class="aff-cell">National Research Council of Canada</td><td>Discussions/collaborations for VLOT instruments, strategies for E-ELT vs TMT, and space projects.</td></tr>
+<tr><td class="name-cell">Stanimir Metchev</td><td class="aff-cell">Western University</td><td>Synthesize interests in astronomical instrumentation in potential paths toward future development proposals.</td></tr>
+<tr><td class="name-cell">Nathalie N.-Q. Ouellette</td><td class="aff-cell">Université de Montréal</td><td>Learning about other instrumentation projects; brainstorming with the community on better support for instrument/mission development</td></tr>
+<tr><td class="name-cell">Zoran Ninkov</td><td class="aff-cell">Rochester Institute of Technology</td><td>Hear about what is happening across the country</td></tr>
+<tr><td class="name-cell">Anna Ordog</td><td class="aff-cell">University of Western Ontario</td><td>I don&#x27;t have a lot of background in this, so I would just be interested to learn what others have been thinking about.</td></tr>
+<tr><td class="name-cell">Kim Venn</td><td class="aff-cell">Univ. of Victoria</td><td>Contribute to next generation instruments, teams, and good governance.</td></tr>
+<tr><td class="name-cell">André Villemaire</td><td class="aff-cell">ABB inc.</td><td>C&#x27;est ma première fois, je n&#x27;ai pas d&#x27;attente particulière, je veux me familiaritser</td></tr>
+<tr><td class="name-cell">Alexis Hill</td><td class="aff-cell">NRC Herzberg</td><td>Community discussion on Canadian astronomy directions</td></tr>
+<tr><td class="name-cell">Mohan Agrawal <span class="s-badge">student</span></td><td class="aff-cell">McGill University</td><td>Learning about resources available in Canada for designing and testing new mission concepts.</td></tr>
+<tr><td class="name-cell">Mayukh Bagchi <span class="s-badge">student</span></td><td class="aff-cell">Queen&#x27;s University</td><td>Mostly networking, getting a sense of current instrumentation landscape and where it is headed.</td></tr>
+<tr><td class="name-cell">Michael Barth <span class="s-badge">student</span></td><td class="aff-cell">University of Montreal</td><td>Learning more about plans to handle large datasets from next-generation radio interferometers.</td></tr>
+<tr><td class="name-cell">Nicholas Clark <span class="s-badge">student</span></td><td class="aff-cell">Western University</td><td>to learn more about Canada&#x27;s role in instrumentation on the international stage</td></tr>
+<tr><td class="name-cell">Andre Fogal <span class="s-badge">student</span></td><td class="aff-cell">University of Victoria</td><td>I would like to network with other Canadians working in instrumentation and learn what other projects are underway.</td></tr>
+</tbody></table>
+</div></div>
+
+</main>
+<script>
+new Chart(document.getElementById('chartAttend'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Yes (72)', 'Maybe (116)', 'No (187)', 'No response (34)'],
+    datasets: [{ data: [72,116,187,34],
+      backgroundColor: ['#2e7d52','#c07a20','#aaa','#ddd'], borderWidth:2, borderColor:'#fff' }]
+  },
+  options: { plugins: { legend: { position:'bottom', labels:{ font:{size:11} } } }, cutout:'55%' }
+});
+new Chart(document.getElementById('chartThemes'), {
+  type: 'bar',
+  data: {
+    labels: ["Space-based instrumentation", "Data analysis & valorisation", "Canada-wide framework", "Canada's role in VLOT"],
+    datasets: [{ label:'Votes', data: [127, 88, 77, 71],
+      backgroundColor: ['#1a6b8a','#2e5d7a','#4a2e7a','#7a4a1e'], borderRadius:6 }]
+  },
+  options: {
+    indexAxis:'y',
+    plugins: { legend:{ display:false } },
+    scales: { x: { beginAtZero:true }, y:{ grid:{ display:false } } }
+  }
+});
+</script>
+</body>
+</html>

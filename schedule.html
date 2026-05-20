@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Schedule — Canadian Astronomy Instrumentation Workshop 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green:   #6b8f5c;
+  --green-l: #87a878;
+  --bg:      #faf8f5;
+  --bg2:     #f0f4ee;
+  --text:    #2c3e2d;
+  --muted:   #5a6f5a;
+  --border:  #dde8d8;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* ── Nav ── */
+nav {
+  position: fixed; top:0; left:0; right:0;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  padding: 0 24px;
+}
+.nav-inner {
+  max-width: 900px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  height: 58px;
+}
+.nav-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px; font-weight: 600;
+  color: var(--green); text-decoration: none;
+}
+.nav-links { display:flex; gap:24px; list-style:none; }
+.nav-links a {
+  color: var(--muted); text-decoration: none;
+  font-size: 13px; font-weight: 500;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--green); }
+
+/* ── Page header ── */
+.page-header {
+  background: linear-gradient(135deg, #2c3e2d 0%, #3d5e3a 60%, #1a2e1c 100%);
+  padding: 120px 24px 64px;
+  text-align: center;
+  color: #fff;
+}
+.page-header .tag {
+  display: inline-block;
+  background: rgba(135,168,120,0.3);
+  border: 1px solid rgba(135,168,120,0.5);
+  color: #c0d9b8;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 5px 16px; border-radius: 20px;
+  margin-bottom: 20px;
+}
+.page-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 4.5vw, 48px);
+  font-weight: 700; margin-bottom: 12px;
+}
+.page-header .sub {
+  font-size: 15px; color: #9ab89a; letter-spacing: .02em;
+}
+
+/* ── Layout ── */
+.container { max-width: 900px; margin: 0 auto; padding: 60px 24px 100px; }
+
+/* ── Non-session slots ── */
+.slot {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: .8rem;
+  padding: .75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: .55rem;
+  border: 1px solid var(--border);
+  background: #fff;
+  align-items: center;
+}
+.slot-break, .slot-open, .slot-close {
+  background: var(--bg2);
+  border-color: #c8d8c4;
+}
+.slot-lunch {
+  background: #fffdf0;
+  border-color: #e8d898;
+}
+.slot-time {
+  font-weight: 700; font-size: .82rem; color: var(--green);
+  white-space: nowrap;
+}
+.slot-label { font-weight: 600; font-size: .92rem; }
+.slot-sub   { font-size: .8rem; color: var(--muted); margin-top: .15rem; }
+
+/* ── Session cards ── */
+.session-card {
+  border-radius: 12px;
+  border: 1px solid var(--bdr, #ccc);
+  background: #fff;
+  margin-bottom: 1.4rem;
+  overflow: hidden;
+}
+.sc-header {
+  background: var(--accent);
+  padding: 1.1rem 1.4rem;
+  display: flex; align-items: flex-start; gap: 1rem;
+}
+.sc-icon  { font-size: 1.6rem; line-height: 1; padding-top: .1rem; flex-shrink:0; }
+.sc-meta  { flex: 1; }
+.sc-time  { font-size: .78rem; color: rgba(255,255,255,.75); letter-spacing:.04em; margin-bottom:.2rem; }
+.sc-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #fff; font-weight: 600; line-height: 1.3; }
+.votes-badge {
+  display: inline-block;
+  background: rgba(255,255,255,.18);
+  border-radius: 12px;
+  padding: .15rem .65rem;
+  font-size: .75rem; color: rgba(255,255,255,.85);
+  margin-top: .45rem;
+}
+.sc-body { padding: 1.2rem 1.4rem; background: var(--light, #f9f9f9); }
+.sc-section-label {
+  font-size: .75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--accent); margin-bottom: .6rem;
+}
+.fmt-note { font-weight:400; text-transform:none; letter-spacing:0; color: var(--muted); }
+.tbd { font-size: .85rem; color: var(--muted); font-style: italic; }
+
+/* ── Speaker table ── */
+.spk-table {
+  width: 100%; border-collapse: collapse;
+  font-size: .83rem;
+  border: 1px solid var(--bdr, #ccc);
+  border-radius: 8px; overflow: hidden;
+  background: #fff;
+}
+.spk-table thead th {
+  background: rgba(0,0,0,.05);
+  padding: .45rem .8rem;
+  text-align: left; font-size: .76rem; font-weight: 600;
+}
+.spk-table tbody tr:nth-child(even) { background: rgba(0,0,0,.025); }
+.spk-table tbody td { padding: .45rem .8rem; vertical-align: top; border-bottom: 1px solid var(--bdr,#eee); }
+.spk-name { font-weight: 600; white-space: nowrap; }
+.spk-aff  { color: var(--muted); font-size: .76rem; }
+.spk-dur  { text-align: center; white-space: nowrap; color: var(--muted); }
+
+/* ── Panelist chips ── */
+.chips {
+  display: flex; flex-wrap: wrap; gap: .55rem;
+}
+.chip {
+  background: #fff;
+  border: 1px solid var(--bdr, #ccc);
+  border-radius: 8px;
+  padding: .5rem .85rem;
+  cursor: default;
+  transition: box-shadow .15s;
+  max-width: 240px;
+}
+.chip:hover { box-shadow: 0 2px 10px rgba(0,0,0,.1); }
+.chip-name { display:block; font-weight: 600; font-size: .85rem; }
+.chip-aff  { display:block; font-size: .74rem; color: var(--muted); }
+
+@media (max-width: 600px) {
+  .slot { grid-template-columns: 100px 1fr; }
+  .sc-header { flex-direction: column; gap: .5rem; }
+  .chip { max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">CAIW 2026</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#venue">Venue</a></li>
+      <li><a href="schedule.html">Schedule</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="tag">Programme</div>
+  <h1>Canadian Astronomy Instrumentation Workshop 2026</h1>
+  <div class="sub">June 12, 2026 &nbsp;·&nbsp; Campus MIL, Université de Montréal</div>
+</div>
+
+<div class="container">
+  
+<div class="slot slot-open">
+  <div class="slot-time">8:45</div>
+  <div class="slot-content">
+    <div class="slot-label">👋 Welcome address</div>
+    <div class="slot-sub">Organizers · Overview of the day, code of conduct</div>
+  </div>
+</div>
+
+<div class="session-card" id="session1" style="--accent:#1a6b8a;--light:#e8f4f9;--bdr:#9ac8db">
+  <div class="sc-header">
+    <div class="sc-icon">🛰️</div>
+    <div class="sc-meta">
+      <div class="sc-time">9:00 – 10:30 &nbsp;·&nbsp; 90 min</div>
+      <h3 class="sc-title">Space-based instrumentation — Canadian-led &amp; international partnerships</h3>
+      <span class="votes-badge">127 votes</span>
+    </div>
+  </div>
+  <div class="sc-body">
+    <div class="sc-section-label">Talks <span class="fmt-note">(~10 min each)</span></div>
+    <table class="spk-table"><thead><tr><th>Speaker</th><th>Affiliation</th><th>Topic</th><th>Time</th></tr></thead><tbody><tr><td class="spk-name">Stanimir Metchev</td><td class="spk-aff">University of Western Ontario</td><td class="spk-topic">The POET Space Mission - Canadian Leadership in Exoplanet Exploration</td><td class="spk-dur">10&nbsp;min</td></tr>
+<tr><td class="spk-name">Christian Marois</td><td class="spk-aff">NRC Herzberg</td><td class="spk-topic">A Canadian exoplanet imaging spectrograph for HWO</td><td class="spk-dur">10&nbsp;min</td></tr>
+<tr><td class="spk-name">Frederic Grandmont</td><td class="spk-aff">ABB</td><td class="spk-topic">Pleasure and pain of building astronomy (or other) space instrument in industry.</td><td class="spk-dur">10&nbsp;min</td></tr>
+<tr><td class="spk-name">Charles Lee</td><td class="spk-aff">University of Manitoba</td><td class="spk-topic">CubeSat academic programs and their potential role in Space Astronomy</td><td class="spk-dur">5&nbsp;min</td></tr>
+<tr><td class="spk-name">Nick Cowan</td><td class="spk-aff">McGill University</td><td class="spk-topic">Canadian participation in the Ariel mission</td><td class="spk-dur">5&nbsp;min</td></tr>
+<tr><td class="spk-name">Julie Halverson</td><td class="spk-aff">TBD</td><td class="spk-topic">XRISM X-ray Space Telescope</td><td class="spk-dur">5&nbsp;min</td></tr></tbody></table>
+    <div class="sc-section-label" style="margin-top:1.4rem">Panel discussion</div>
+    <div class="chips"><div class="chip" title="TBD"><span class="chip-name">Frederic Grandmont</span><span class="chip-aff">ABB</span></div>
+<div class="chip" title="TBD"><span class="chip-name">Panelist 2</span><span class="chip-aff">TBD</span></div>
+<div class="chip" title="TBD"><span class="chip-name">Panelist 3</span><span class="chip-aff">TBD</span></div>
+<div class="chip" title="TBD"><span class="chip-name">Panelist 4</span><span class="chip-aff">TBD</span></div></div>
+  </div>
+</div>
+
+<div class="slot slot-break">
+  <div class="slot-time">10:30–10:50</div>
+  <div class="slot-content">
+    <div class="slot-label">☕ Coffee break</div>
+    
+  </div>
+</div>
+
+<div class="session-card" id="session2" style="--accent:#7a4a1e;--light:#f9f1eb;--bdr:#d4a97a">
+  <div class="sc-header">
+    <div class="sc-icon">🔭</div>
+    <div class="sc-meta">
+      <div class="sc-time">10:50 – 12:20 &nbsp;·&nbsp; 90 min</div>
+      <h3 class="sc-title">Canada&#x27;s role in Very Large Optical Telescope instrumentation</h3>
+      <span class="votes-badge">71 votes</span>
+    </div>
+  </div>
+  <div class="sc-body">
+    <div class="sc-section-label">Talks <span class="fmt-note">(~10 min each)</span></div>
+    <table class="spk-table"><thead><tr><th>Speaker</th><th>Affiliation</th><th>Topic</th><th>Time</th></tr></thead><tbody><tr><td class="spk-name">Viktor Khalack</td><td class="spk-aff">Université de Moncton</td><td class="spk-topic">Abundance analysis and magnetic field measurements based on the high-resolution spectra</td><td class="spk-dur">5&nbsp;min</td></tr>
+<tr><td class="spk-name">Alan McConnachie</td><td class="spk-aff">NRC Herzberg</td><td class="spk-topic">Technology Roadmaps at HAA</td><td class="spk-dur">10&nbsp;min</td></tr></tbody></table>
+    <div class="sc-section-label" style="margin-top:1.4rem">Panel discussion</div>
+    <div class="chips"><div class="chip" title="NRC-HAA technology roadmaps; Canada&#x27;s role in VLOT instrumentation."><span class="chip-name">Alan McConnachie</span><span class="chip-aff">NRC Herzberg</span></div>
+<div class="chip" title="TBD"><span class="chip-name">Panelist 2</span><span class="chip-aff">TBD</span></div>
+<div class="chip" title="TBD"><span class="chip-name">Panelist 3</span><span class="chip-aff">TBD</span></div>
+<div class="chip" title="TBD"><span class="chip-name">Panelist 4</span><span class="chip-aff">TBD</span></div></div>
+  </div>
+</div>
+
+<div class="slot slot-lunch">
+  <div class="slot-time">12:20–13:30</div>
+  <div class="slot-content">
+    <div class="slot-label">🍽️ Lunch</div>
+    <div class="slot-sub">Campus MIL cafeteria</div>
+  </div>
+</div>
+
+<div class="session-card" id="session3" style="--accent:#2e5d7a;--light:#eaf2f7;--bdr:#8ab4cc">
+  <div class="sc-header">
+    <div class="sc-icon">💾</div>
+    <div class="sc-meta">
+      <div class="sc-time">13:30 – 15:00 &nbsp;·&nbsp; 90 min</div>
+      <h3 class="sc-title">Data analysis &amp; valorisation — post-first-light support</h3>
+      <span class="votes-badge">88 votes</span>
+    </div>
+  </div>
+  <div class="sc-body">
+    <div class="sc-section-label">Talks <span class="fmt-note">(~10 min each)</span></div>
+    <table class="spk-table"><thead><tr><th>Speaker</th><th>Affiliation</th><th>Topic</th><th>Time</th></tr></thead><tbody><tr><td class="spk-name">Ketan Sand, Mike Cichonski</td><td class="spk-aff">TBD</td><td class="spk-topic">CanDIAPL - Enabling Open-Source Data-Intensive, Multi-Messenger Astronomy at Scale</td><td class="spk-dur">5&nbsp;min</td></tr>
+<tr><td class="spk-name">Jade Yeung</td><td class="spk-aff">TBD</td><td class="spk-topic">An Exposure Time Calculator for CASTOR&#x27;s UVMOS</td><td class="spk-dur">5&nbsp;min</td></tr>
+<tr><td class="spk-name">Charles Lee</td><td class="spk-aff">University of Manitoba</td><td class="spk-topic">Simulation of Digital Micromirror Devices for Multi-Object Spectroscopy on CASTOR</td><td class="spk-dur">5&nbsp;min</td></tr>
+<tr><td class="spk-name">TBD</td><td class="spk-aff">TBD</td><td class="spk-topic">TBD</td><td class="spk-dur">10&nbsp;min</td></tr></tbody></table>
+    <div class="sc-section-label" style="margin-top:1.4rem">Panel discussion</div>
+    <div class="chips"><div class="chip" title="TBD"><span class="chip-name">Panelist 1</span><span class="chip-aff">TBD</span></div>
+<div class="chip" title="TBD"><span class="chip-name">Panelist 2</span><span class="chip-aff">TBD</span></div>
+<div class="chip" title="TBD"><span class="chip-name">Panelist 3</span><span class="chip-aff">TBD</span></div>
+<div class="chip" title="TBD"><span class="chip-name">Panelist 4</span><span class="chip-aff">TBD</span></div></div>
+  </div>
+</div>
+
+<div class="slot slot-break">
+  <div class="slot-time">15:00–15:20</div>
+  <div class="slot-content">
+    <div class="slot-label">☕ Coffee break</div>
+    
+  </div>
+</div>
+
+<div class="session-card" id="session4" style="--accent:#4a2e7a;--light:#f1edf9;--bdr:#aa8ad4">
+  <div class="sc-header">
+    <div class="sc-icon">🔧</div>
+    <div class="sc-meta">
+      <div class="sc-time">15:20 – 16:50 &nbsp;·&nbsp; 90 min</div>
+      <h3 class="sc-title">Canada-wide framework to support instrumentation teams</h3>
+      <span class="votes-badge">77 votes</span>
+    </div>
+  </div>
+  <div class="sc-body">
+    <div class="sc-section-label">Talks <span class="fmt-note">(~10 min each)</span></div>
+    <table class="spk-table"><thead><tr><th>Speaker</th><th>Affiliation</th><th>Topic</th><th>Time</th></tr></thead><tbody><tr><td class="spk-name">TBD</td><td class="spk-aff">TBD</td><td class="spk-topic">TBD</td><td class="spk-dur">10&nbsp;min</td></tr></tbody></table>
+    <div class="sc-section-label" style="margin-top:1.4rem">Panel discussion</div>
+    <div class="chips"><div class="chip" title="SPIRou, NIRPS, ANDES, NIRISS, and UdeM instrumentation program — broad view of Canadian instrument development."><span class="chip-name">René Doyon</span><span class="chip-aff">Université de Montréal</span></div>
+<div class="chip" title="TBD"><span class="chip-name">Panelist 2</span><span class="chip-aff">TBD</span></div>
+<div class="chip" title="TBD"><span class="chip-name">Panelist 3</span><span class="chip-aff">TBD</span></div>
+<div class="chip" title="TBD"><span class="chip-name">Panelist 4</span><span class="chip-aff">TBD</span></div></div>
+  </div>
+</div>
+
+<div class="slot slot-close">
+  <div class="slot-time">16:50–17:15</div>
+  <div class="slot-content">
+    <div class="slot-label">🎯 Wrap-up &amp; action items</div>
+    <div class="slot-sub">One spokesperson per session · Next steps</div>
+  </div>
+</div>
+</div>
+
+</body>
+</html>
