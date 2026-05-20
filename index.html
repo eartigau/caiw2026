@@ -429,24 +429,54 @@
         /* ── Schedule section ─────────────────────────────────── */
         .schedule { background: white; }
 
-        .schedule-placeholder {
+        .day-row {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            border-bottom: 1px solid var(--border-light);
+            padding: 10px 0;
+        }
+        .day-row:last-child { border-bottom: none; }
+        .day-time {
+            width: 130px;
+            flex-shrink: 0;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-light);
+            padding-top: 3px;
+            font-variant-numeric: tabular-nums;
+        }
+        .day-content { flex: 1; }
+        .day-content.break-row { color: var(--text-light); font-style: italic; font-size: 14px; padding-top: 3px; }
+        .session-card {
+            border-left: 3px solid var(--green-medium);
+            padding: 8px 14px;
+            border-radius: 0 8px 8px 0;
             background: var(--bg-green);
-            border-radius: 12px;
-            padding: 40px;
-            text-align: center;
-            border: 2px dashed var(--green-soft);
         }
-
-        .schedule-placeholder p {
-            color: var(--text-medium);
-            font-size: 16px;
-            margin: 0;
+        .session-card.s1 { border-color: #1a6b8a; background: #e8f4f9; }
+        .session-card.s2 { border-color: #7a4a1e; background: #f9f1eb; }
+        .session-card.s3 { border-color: #2e5d7a; background: #eaf2f7; }
+        .session-card.s4 { border-color: #4a2e7a; background: #f1edf9; }
+        .session-card .sess-icon { font-size: 15px; margin-right: 6px; }
+        .session-card .sess-title {
+            font-size: 14.5px;
+            font-weight: 600;
+            color: var(--text-dark);
         }
-
-        .schedule-placeholder .sched-icon {
-            font-size: 42px;
-            margin-bottom: 14px;
+        .schedule-link {
+            display: inline-block;
+            margin-top: 22px;
+            padding: 10px 24px;
+            background: var(--green-medium);
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
         }
+        .schedule-link:hover { background: #4e6e40; }
 
         /* ── MTR banner ───────────────────────────────────────── */
         .mtr-banner {
@@ -805,14 +835,65 @@
 <section class="schedule" id="schedule">
     <div class="section-inner">
         <h2 class="section-title">Programme</h2>
-        <div class="schedule-placeholder">
-            <div class="sched-icon">🗓</div>
-            <p>
-                <strong>Detailed schedule coming soon.</strong><br>
-                The agenda will be shaped by community input on discussion topics and circulated
-                ahead of the workshop. Please send your topic suggestions to the organizing committee.
-            </p>
+
+        <div class="day-row">
+            <div class="day-time">8:45</div>
+            <div class="day-content break-row">Welcome address — Organizers</div>
         </div>
+        <div class="day-row">
+            <div class="day-time">9:00 – 10:30</div>
+            <div class="day-content">
+                <div class="session-card s1">
+                    <span class="sess-icon">🛰️</span>
+                    <span class="sess-title">Space-based instrumentation — Canadian-led &amp; international partnerships</span>
+                </div>
+            </div>
+        </div>
+        <div class="day-row">
+            <div class="day-time">10:30 – 10:50</div>
+            <div class="day-content break-row">Coffee break</div>
+        </div>
+        <div class="day-row">
+            <div class="day-time">10:50 – 12:20</div>
+            <div class="day-content">
+                <div class="session-card s2">
+                    <span class="sess-icon">🔭</span>
+                    <span class="sess-title">Canada's role in Very Large Optical Telescope instrumentation</span>
+                </div>
+            </div>
+        </div>
+        <div class="day-row">
+            <div class="day-time">12:20 – 13:30</div>
+            <div class="day-content break-row">Lunch — Campus MIL cafeteria</div>
+        </div>
+        <div class="day-row">
+            <div class="day-time">13:30 – 15:00</div>
+            <div class="day-content">
+                <div class="session-card s3">
+                    <span class="sess-icon">💾</span>
+                    <span class="sess-title">Data analysis &amp; valorisation — post-first-light support</span>
+                </div>
+            </div>
+        </div>
+        <div class="day-row">
+            <div class="day-time">15:00 – 15:20</div>
+            <div class="day-content break-row">Coffee break</div>
+        </div>
+        <div class="day-row">
+            <div class="day-time">15:20 – 16:50</div>
+            <div class="day-content">
+                <div class="session-card s4">
+                    <span class="sess-icon">🔧</span>
+                    <span class="sess-title">Canada-wide framework to support instrumentation teams</span>
+                </div>
+            </div>
+        </div>
+        <div class="day-row">
+            <div class="day-time">16:50 – 17:15</div>
+            <div class="day-content break-row">Wrap-up &amp; action items</div>
+        </div>
+
+        <a href="schedule.html" class="schedule-link">View full schedule with speakers →</a>
     </div>
 </section>
 
