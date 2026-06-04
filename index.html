@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* ── Reset & base ─────────────────────────────────────── */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
@@ -31,7 +30,7 @@
             line-height: 1.7;
         }
 
-        /* ── Navigation ───────────────────────────────────────── */
+        /* ── Navigation ── */
         nav {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -41,7 +40,6 @@
             z-index: 1000;
             padding: 0 24px;
         }
-
         .nav-inner {
             max-width: 1100px;
             margin: 0 auto;
@@ -50,572 +48,311 @@
             align-items: center;
             height: 60px;
         }
-
         .nav-brand {
             font-family: 'Playfair Display', serif;
-            font-size: 17px;
-            font-weight: 600;
+            font-size: 17px; font-weight: 600;
             color: var(--green-medium);
             text-decoration: none;
             letter-spacing: 0.01em;
         }
-
         .nav-links {
             display: flex;
             gap: 28px;
             list-style: none;
         }
-
         .nav-links a {
             color: var(--text-medium);
             text-decoration: none;
-            font-size: 13.5px;
-            font-weight: 500;
+            font-size: 13.5px; font-weight: 500;
             transition: color 0.2s;
+            padding-bottom: 3px;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-links a:hover { color: var(--green-medium); }
+        .nav-links a.active {
+            color: var(--green-medium);
+            border-bottom-color: var(--green-medium);
         }
 
-        .nav-links a:hover { color: var(--green-medium); }
-
-        /* ── Hero ─────────────────────────────────────────────── */
+        /* ── Hero ── */
         .hero {
             position: relative;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; overflow: hidden;
         }
-
         .hero-bg {
-            position: absolute;
-            inset: 0;
+            position: absolute; inset: 0;
             background-image: url('https://exoplanetes.umontreal.ca/wp-content/uploads/2020/05/acfas_preuveparlimage.jpg');
-            background-size: cover;
-            background-position: center;
+            background-size: cover; background-position: center;
             filter: brightness(0.35) saturate(1.2);
             transform: scale(1.04);
             transition: transform 8s ease;
         }
-
         .hero:hover .hero-bg { transform: scale(1.0); }
-
         .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                180deg,
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg,
                 rgba(20,35,20,0.2) 0%,
                 rgba(20,35,20,0.55) 60%,
-                rgba(20,35,20,0.8) 100%
-            );
+                rgba(20,35,20,0.8) 100%);
         }
-
         .hero-content {
-            position: relative;
-            z-index: 2;
-            padding: 40px 24px;
-            max-width: 860px;
+            position: relative; z-index: 2;
+            padding: 40px 24px; max-width: 860px;
         }
-
         .hero-tag {
             display: inline-block;
             background: rgba(135,168,120,0.35);
             border: 1px solid rgba(135,168,120,0.6);
             color: #c8e0c0;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            padding: 6px 18px;
-            border-radius: 20px;
+            font-size: 12px; font-weight: 600;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            padding: 6px 18px; border-radius: 20px;
             margin-bottom: 24px;
         }
-
         .hero h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(32px, 5.5vw, 62px);
-            font-weight: 700;
-            color: #ffffff;
-            line-height: 1.15;
+            font-size: clamp(32px, 5.5vw, 62px); font-weight: 700;
+            color: #ffffff; line-height: 1.15;
             margin-bottom: 20px;
             text-shadow: 0 2px 20px rgba(0,0,0,0.4);
         }
-
         .hero-date {
-            font-size: 20px;
-            font-weight: 400;
-            color: #b8d4b0;
-            margin-bottom: 10px;
-            letter-spacing: 0.03em;
+            font-size: 20px; font-weight: 400;
+            color: #b8d4b0; margin-bottom: 10px; letter-spacing: 0.03em;
         }
-
         .hero-location {
-            font-size: 15px;
-            color: #8aaa82;
-            margin-bottom: 44px;
+            font-size: 15px; color: #8aaa82; margin-bottom: 44px;
         }
-
+        .hero-buttons {
+            display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+        }
         .hero-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+            display: inline-flex; align-items: center; gap: 10px;
             padding: 15px 34px;
             background: var(--green-medium);
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 15px;
+            color: white; text-decoration: none;
+            border-radius: 30px; font-weight: 600; font-size: 15px;
             transition: all 0.3s;
             box-shadow: 0 4px 20px rgba(107,143,92,0.4);
         }
-
         .hero-cta:hover {
             background: var(--green-soft);
             transform: translateY(-3px);
             box-shadow: 0 8px 30px rgba(107,143,92,0.5);
         }
-
+        .hero-cta.outline {
+            background: transparent;
+            border: 2px solid rgba(135,168,120,0.7);
+            color: #c8e0c0;
+            box-shadow: none;
+        }
+        .hero-cta.outline:hover {
+            background: rgba(135,168,120,0.15);
+            border-color: rgba(135,168,120,1);
+            color: #e0f0d8;
+        }
         .scroll-hint {
-            position: absolute;
-            bottom: 36px;
-            left: 50%;
+            position: absolute; bottom: 36px; left: 50%;
             transform: translateX(-50%);
-            color: rgba(255,255,255,0.5);
-            font-size: 22px;
+            color: rgba(255,255,255,0.5); font-size: 22px;
             animation: bounce 2.2s infinite;
         }
-
         @keyframes bounce {
             0%, 100% { transform: translateX(-50%) translateY(0); }
             50%       { transform: translateX(-50%) translateY(9px); }
         }
 
-        /* ── Generic section wrapper ──────────────────────────── */
-        section {
-            padding: 90px 24px;
-        }
-
-        .section-inner {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
+        /* ── Generic section ── */
+        section { padding: 90px 24px; }
+        .section-inner { max-width: 1000px; margin: 0 auto; }
         .section-title {
             font-family: 'Playfair Display', serif;
-            font-size: 34px;
-            color: var(--green-medium);
-            margin-bottom: 32px;
-            padding-bottom: 16px;
+            font-size: 34px; color: var(--green-medium);
+            margin-bottom: 32px; padding-bottom: 16px;
             position: relative;
         }
-
         .section-title::after {
             content: '';
-            position: absolute;
-            bottom: 0; left: 0;
+            position: absolute; bottom: 0; left: 0;
             width: 56px; height: 3px;
-            background: var(--green-soft);
-            border-radius: 2px;
+            background: var(--green-soft); border-radius: 2px;
         }
-
         .section-title.centered { text-align: center; }
         .section-title.centered::after { left: 50%; transform: translateX(-50%); }
-
         p { margin-bottom: 1.1em; }
         p:last-child { margin-bottom: 0; }
 
-        /* ── About section ────────────────────────────────────── */
+        /* ── About ── */
         .about { background: white; }
-
         .about-layout {
             display: grid;
             grid-template-columns: 1fr 320px;
-            gap: 56px;
-            align-items: start;
+            gap: 56px; align-items: start;
         }
-
-        .about-text {
-            font-size: 17px;
-            color: var(--text-dark);
-            line-height: 1.85;
-        }
-
+        .about-text { font-size: 17px; color: var(--text-dark); line-height: 1.85; }
         .about-text a {
-            color: var(--green-medium);
-            text-decoration: none;
-            border-bottom: 1px solid var(--green-soft);
-            transition: all 0.2s;
+            color: var(--green-medium); text-decoration: none;
+            border-bottom: 1px solid var(--green-soft); transition: all 0.2s;
         }
-
         .about-text a:hover { color: var(--green-soft); }
-
         .info-card {
-            background: var(--bg-green);
-            border-radius: 14px;
-            padding: 28px 26px;
-            border: 1px solid var(--border-light);
+            background: var(--bg-green); border-radius: 14px;
+            padding: 28px 26px; border: 1px solid var(--border-light);
         }
-
         .info-card h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            color: var(--green-medium);
-            margin-bottom: 18px;
+            font-size: 18px; color: var(--green-medium); margin-bottom: 18px;
         }
-
         .info-row {
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-            margin-bottom: 14px;
-            font-size: 14.5px;
-            color: var(--text-medium);
+            display: flex; gap: 12px; align-items: flex-start;
+            margin-bottom: 14px; font-size: 14.5px; color: var(--text-medium);
         }
+        .info-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+        .info-label { font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 2px; }
 
-        .info-icon {
-            font-size: 18px;
-            flex-shrink: 0;
-            margin-top: 1px;
-        }
-
-        .info-label {
-            font-weight: 600;
-            color: var(--text-dark);
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        /* ── Topics section ───────────────────────────────────── */
+        /* ── Topics ── */
         .topics { background: var(--bg-cream); }
-
         .topics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 22px;
-            margin-top: 10px;
+            gap: 22px; margin-top: 10px;
         }
-
         .topic-card {
-            background: white;
-            border-radius: 12px;
-            padding: 28px 26px;
+            background: white; border-radius: 12px; padding: 28px 26px;
             border: 1px solid var(--border-light);
             border-left: 4px solid var(--green-medium);
             transition: all 0.25s;
         }
-
         .topic-card:hover {
             box-shadow: 0 6px 24px rgba(107,143,92,0.12);
             transform: translateY(-3px);
         }
-
         .topic-number {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            color: var(--green-soft);
-            text-transform: uppercase;
-            margin-bottom: 10px;
+            font-size: 11px; font-weight: 700;
+            letter-spacing: 0.1em; color: var(--green-soft);
+            text-transform: uppercase; margin-bottom: 10px;
         }
-
         .topic-card h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            color: var(--text-dark);
-            line-height: 1.4;
+            font-size: 18px; color: var(--text-dark); line-height: 1.4;
         }
 
-        /* ── Instruments showcase ─────────────────────────────── */
-        .instruments { background: white; }
+        /* ── Sessions overview ── */
+        .programme { background: white; }
+        .sessions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px; margin-bottom: 40px;
+        }
+        .sess-card {
+            border-radius: 12px; overflow: hidden;
+            border: 1px solid var(--border-light);
+            transition: all 0.25s;
+        }
+        .sess-card:hover { transform: translateY(-3px); box-shadow: 0 6px 22px rgba(0,0,0,0.1); }
+        .sess-card-head {
+            padding: 16px 18px;
+            color: white;
+        }
+        .sess-card-head .sess-time {
+            font-size: 11px; opacity: 0.8; letter-spacing: 0.04em; margin-bottom: 6px;
+        }
+        .sess-card-head .sess-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+        .sess-card-head h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 15px; font-weight: 600; line-height: 1.35;
+        }
+        .sess-card-foot {
+            padding: 10px 18px;
+            background: #fafafa;
+            font-size: 12px; color: var(--text-light);
+        }
+        .programme-cta-row { text-align: center; }
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 32px;
+            background: var(--green-medium); color: white;
+            text-decoration: none; border-radius: 30px;
+            font-weight: 600; font-size: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 18px rgba(107,143,92,0.35);
+        }
+        .btn-primary:hover {
+            background: var(--green-soft);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(107,143,92,0.45);
+        }
 
+        /* ── Instruments ── */
+        .instruments { background: var(--bg-cream); }
         .instruments-intro {
-            font-size: 17px;
-            color: var(--text-medium);
-            max-width: 700px;
-            margin: 0 auto 44px;
-            text-align: center;
-            line-height: 1.8;
+            font-size: 17px; color: var(--text-medium);
+            max-width: 700px; margin: 0 auto 44px;
+            text-align: center; line-height: 1.8;
         }
-
         .instruments-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 20px;
         }
-
         .instrument-card {
-            position: relative;
-            border-radius: 14px;
-            overflow: hidden;
+            position: relative; border-radius: 14px; overflow: hidden;
             aspect-ratio: 16/9;
             box-shadow: 0 4px 18px rgba(0,0,0,0.12);
             transition: all 0.35s;
         }
-
         .instrument-card:hover { transform: scale(1.025); box-shadow: 0 10px 36px rgba(0,0,0,0.2); }
-
         .instrument-card img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            display: block;
+            width: 100%; height: 100%; object-fit: cover; display: block;
             transition: transform 0.5s;
         }
-
         .instrument-card:hover img { transform: scale(1.06); }
-
         .instrument-label {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
+            position: absolute; bottom: 0; left: 0; right: 0;
             background: linear-gradient(transparent, rgba(10,20,10,0.82));
-            color: white;
-            padding: 30px 18px 16px;
-            font-size: 14px;
-            font-weight: 500;
+            color: white; padding: 30px 18px 16px;
+            font-size: 14px; font-weight: 500;
         }
-
         .instrument-label strong {
-            display: block;
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 2px;
+            display: block; font-family: 'Playfair Display', serif;
+            font-size: 18px; font-weight: 600; margin-bottom: 2px;
         }
 
-        /* ── Logistics section ────────────────────────────────── */
-        .logistics { background: var(--bg-cream); }
-
-        .logistics-cols {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 36px;
-        }
-
-        .logistics-block {
-            background: white;
-            border-radius: 12px;
-            padding: 28px 26px;
-            border: 1px solid var(--border-light);
-        }
-
-        .logistics-block h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            color: var(--green-medium);
-            margin-bottom: 16px;
-        }
-
-        .logistics-block ul {
-            list-style: none;
-            font-size: 15.5px;
-            color: var(--text-medium);
-            line-height: 1.9;
-        }
-
-        .logistics-block li {
-            padding-left: 1.4em;
-            position: relative;
-        }
-
-        .logistics-block li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--green-medium);
-            font-weight: 700;
-        }
-
-        /* ── Schedule section ─────────────────────────────────── */
-        .schedule { background: white; }
-
-        .day-row {
-            display: flex;
-            align-items: stretch;
-            gap: 0;
-            border-bottom: 1px solid var(--border-light);
-            padding: 10px 0;
-        }
-        .day-row:last-child { border-bottom: none; }
-        .day-time {
-            width: 130px;
-            flex-shrink: 0;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-light);
-            padding-top: 3px;
-            font-variant-numeric: tabular-nums;
-        }
-        .day-content { flex: 1; }
-        .day-content.break-row { color: var(--text-light); font-style: italic; font-size: 14px; padding-top: 3px; }
-        .session-card {
-            border-left: 3px solid var(--green-medium);
-            padding: 8px 14px;
-            border-radius: 0 8px 8px 0;
-            background: var(--bg-green);
-        }
-        .session-card.s1 { border-color: #1a6b8a; background: #e8f4f9; }
-        .session-card.s2 { border-color: #7a4a1e; background: #f9f1eb; }
-        .session-card.s3 { border-color: #2e5d7a; background: #eaf2f7; }
-        .session-card.s4 { border-color: #4a2e7a; background: #f1edf9; }
-        .session-card .sess-icon { font-size: 15px; margin-right: 6px; }
-        .session-card .sess-title {
-            font-size: 14.5px;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-        .schedule-link {
-            display: inline-block;
-            margin-top: 22px;
-            padding: 10px 24px;
-            background: var(--green-medium);
-            color: white;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-        .schedule-link:hover { background: #4e6e40; }
-
-        /* ── MTR banner ───────────────────────────────────────── */
+        /* ── MTR banner ── */
         .mtr-banner {
             background: linear-gradient(135deg, var(--green-medium) 0%, #4e6e40 100%);
-            color: white;
-            padding: 60px 24px;
-            text-align: center;
+            color: white; padding: 60px 24px; text-align: center;
         }
-
-        .mtr-banner h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 26px;
-            margin-bottom: 12px;
-        }
-
-        .mtr-banner p {
-            font-size: 16px;
-            opacity: 0.85;
-            max-width: 580px;
-            margin: 0 auto 28px;
-        }
-
+        .mtr-banner h2 { font-family: 'Playfair Display', serif; font-size: 26px; margin-bottom: 12px; }
+        .mtr-banner p { font-size: 16px; opacity: 0.85; max-width: 580px; margin: 0 auto 28px; }
         .mtr-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 13px 30px;
-            background: white;
-            color: var(--green-medium);
-            text-decoration: none;
-            border-radius: 28px;
-            font-weight: 600;
-            font-size: 14.5px;
-            transition: all 0.3s;
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 13px 30px; background: white; color: var(--green-medium);
+            text-decoration: none; border-radius: 28px;
+            font-weight: 600; font-size: 14.5px; transition: all 0.3s;
         }
-
         .mtr-btn:hover {
             background: var(--bg-green);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
 
-        /* ── Organizers ───────────────────────────────────────── */
-        .organizers { background: var(--bg-cream); }
-
-        .organizers-text {
-            font-size: 17px;
-            color: var(--text-medium);
-            line-height: 1.85;
-        }
-
-        .organizers-note {
-            margin-top: 28px;
-            padding: 20px 24px;
-            background: white;
-            border-radius: 10px;
-            border-left: 4px solid var(--green-soft);
-            font-size: 15px;
-            color: var(--text-medium);
-        }
-
-        .contact-card {
-            display: flex;
-            align-items: center;
-            gap: 22px;
-            margin-top: 28px;
-            padding: 24px 28px;
-            background: white;
-            border-radius: 12px;
-            border: 1px solid var(--border-light);
-            box-shadow: 0 2px 12px rgba(107,143,92,0.08);
-        }
-
-        .contact-icon {
-            font-size: 32px;
-            width: 58px;
-            height: 58px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-green);
-            border-radius: 50%;
-            flex-shrink: 0;
-            color: var(--green-medium);
-        }
-
-        .contact-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            color: var(--text-dark);
-            font-weight: 600;
-        }
-
-        .contact-role {
-            font-size: 13.5px;
-            color: var(--text-light);
-            margin: 4px 0 8px;
-        }
-
-        .contact-email {
-            display: inline-block;
-            font-size: 15px;
-            font-weight: 500;
-            color: var(--green-medium);
-            text-decoration: none;
-            border-bottom: 1px solid var(--green-soft);
-            transition: all 0.2s;
-        }
-
-        .contact-email:hover {
-            color: var(--green-soft);
-            border-bottom-color: var(--green-medium);
-        }
-
-        /* ── Footer ───────────────────────────────────────────── */
+        /* ── Footer ── */
         footer {
-            background: #1e2e1f;
-            color: rgba(255,255,255,0.6);
-            text-align: center;
-            padding: 36px 24px;
-            font-size: 13.5px;
-            line-height: 1.9;
+            background: #1e2e1f; color: rgba(255,255,255,0.6);
+            text-align: center; padding: 36px 24px;
+            font-size: 13.5px; line-height: 1.9;
         }
-
-        footer a {
-            color: var(--green-soft);
-            text-decoration: none;
-        }
-
+        footer a { color: var(--green-soft); text-decoration: none; }
         footer a:hover { color: white; }
 
-        /* ── Responsive ───────────────────────────────────────── */
+        /* ── Responsive ── */
         @media (max-width: 768px) {
             .about-layout { grid-template-columns: 1fr; }
             .instruments-grid { grid-template-columns: 1fr; }
-            .logistics-cols { grid-template-columns: 1fr; }
             .nav-links { display: none; }
         }
-
         @media (max-width: 480px) {
             .hero h1 { font-size: 28px; }
             section { padding: 64px 18px; }
@@ -624,22 +361,20 @@
 </head>
 <body>
 
-<!-- ── Navigation ──────────────────────────────────────────── -->
+<!-- ── Navigation ── -->
 <nav>
     <div class="nav-inner">
-        <a class="nav-brand" href="#">CAIW 2026</a>
+        <a class="nav-brand" href="index.html">CAIW 2026</a>
         <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#topics">Topics</a></li>
-            <li><a href="#instruments">Canadian Instruments</a></li>
-            <li><a href="#logistics">Logistics</a></li>
-            <li><a href="schedule.html">Schedule</a></li>
-            <li><a href="#organizers">Organizers</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="index.html#topics">Topics</a></li>
+            <li><a href="schedule.html">Programme</a></li>
+            <li><a href="logistics.html">Logistics</a></li>
         </ul>
     </div>
 </nav>
 
-<!-- ── Hero ────────────────────────────────────────────────── -->
+<!-- ── Hero ── -->
 <div class="hero">
     <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
@@ -648,12 +383,15 @@
         <h1>Canadian Astronomy<br>Instrumentation Workshop 2026</h1>
         <p class="hero-date">Friday, 12 June 2026 &nbsp;·&nbsp; All day</p>
         <p class="hero-location">Campus MIL, Université de Montréal &nbsp;·&nbsp; Immediately following CASCA 2026</p>
-        <a class="hero-cta" href="#about">Learn more ↓</a>
+        <div class="hero-buttons">
+            <a class="hero-cta" href="schedule.html">View Programme →</a>
+            <a class="hero-cta outline" href="#about">About the Workshop</a>
+        </div>
     </div>
     <div class="scroll-hint">↓</div>
 </div>
 
-<!-- ── About ────────────────────────────────────────────────── -->
+<!-- ── About ── -->
 <section class="about" id="about">
     <div class="section-inner">
         <h2 class="section-title">About the Workshop</h2>
@@ -718,7 +456,7 @@
     </div>
 </section>
 
-<!-- ── Topics ───────────────────────────────────────────────── -->
+<!-- ── Topics ── -->
 <section class="topics" id="topics">
     <div class="section-inner">
         <h2 class="section-title">Discussion Topics</h2>
@@ -743,7 +481,51 @@
     </div>
 </section>
 
-<!-- ── Canadian Instruments Showcase ────────────────────────── -->
+<!-- ── Programme overview ── -->
+<section class="programme" id="programme">
+    <div class="section-inner">
+        <h2 class="section-title">Programme at a Glance</h2>
+        <div class="sessions-grid">
+            <div class="sess-card">
+                <div class="sess-card-head" style="background:#1a6b8a;">
+                    <span class="sess-icon">🏗️</span>
+                    <div class="sess-time">9:00 – 10:30</div>
+                    <h3>Canada-wide framework to support instrumentation teams</h3>
+                </div>
+                <div class="sess-card-foot">Session 1 · 90 min</div>
+            </div>
+            <div class="sess-card">
+                <div class="sess-card-head" style="background:#7a4a1e;">
+                    <span class="sess-icon">🛰️</span>
+                    <div class="sess-time">10:50 – 12:20</div>
+                    <h3>Space-based instrumentation — Canadian-led &amp; international partnerships</h3>
+                </div>
+                <div class="sess-card-foot">Session 2 · 90 min</div>
+            </div>
+            <div class="sess-card">
+                <div class="sess-card-head" style="background:#2e5d7a;">
+                    <span class="sess-icon">🔭</span>
+                    <div class="sess-time">13:30 – 15:00</div>
+                    <h3>Canada's role in Very Large Optical Telescopes &amp; Ground-based upcoming facilities</h3>
+                </div>
+                <div class="sess-card-foot">Session 3 · 90 min</div>
+            </div>
+            <div class="sess-card">
+                <div class="sess-card-head" style="background:#4a2e7a;">
+                    <span class="sess-icon">💾</span>
+                    <div class="sess-time">15:20 – 16:50</div>
+                    <h3>Data analysis &amp; valorisation — post-first-light support</h3>
+                </div>
+                <div class="sess-card-foot">Session 4 · 90 min</div>
+            </div>
+        </div>
+        <div class="programme-cta-row">
+            <a href="schedule.html" class="btn-primary">View full programme with speakers →</a>
+        </div>
+    </div>
+</section>
+
+<!-- ── Canadian Instruments Showcase ── -->
 <section class="instruments" id="instruments">
     <div class="section-inner">
         <h2 class="section-title centered">Canadian Instrumentation Highlights</h2>
@@ -754,8 +536,7 @@
         <div class="instruments-grid">
             <div class="instrument-card">
                 <img src="https://exoplanetes.umontreal.ca/wp-content/uploads/2013/09/FGSNIRISS_Feat.jpg"
-                     alt="NIRISS on the James Webb Space Telescope"
-                     loading="lazy">
+                     alt="NIRISS on the James Webb Space Telescope" loading="lazy">
                 <div class="instrument-label">
                     <strong>NIRISS / JWST</strong>
                     Near Infrared Imager &amp; Slitless Spectrograph
@@ -763,8 +544,7 @@
             </div>
             <div class="instrument-card">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/Canadian_Hydrogen_Intensity_Mapping_Experiment_-_overall.jpg"
-                     alt="CHIME — Canadian Hydrogen Intensity Mapping Experiment"
-                     loading="lazy">
+                     alt="CHIME — Canadian Hydrogen Intensity Mapping Experiment" loading="lazy">
                 <div class="instrument-label">
                     <strong>CHIME</strong>
                     Canadian Hydrogen Intensity Mapping Experiment
@@ -772,8 +552,7 @@
             </div>
             <div class="instrument-card">
                 <img src="https://exoplanetes.umontreal.ca/wp-content/uploads/2020/05/acfas_preuveparlimage.jpg"
-                     alt="SPIRou — colourized spectrum"
-                     loading="lazy">
+                     alt="SPIRou — colourized spectrum" loading="lazy">
                 <div class="instrument-label">
                     <strong>SPIRou</strong>
                     Spectropolarimètre InfraRouge — CFHT
@@ -781,8 +560,7 @@
             </div>
             <div class="instrument-card">
                 <img src="https://optomechanics.ca/wp-content/uploads/2025/02/image006.png"
-                     alt="GIRMOS — Gemini InfraRed Multi-Object Spectrograph"
-                     loading="lazy">
+                     alt="GIRMOS — Gemini InfraRed Multi-Object Spectrograph" loading="lazy">
                 <div class="instrument-label">
                     <strong>GIRMOS</strong>
                     Gemini InfraRed Multi-Object Spectrograph
@@ -792,7 +570,7 @@
     </div>
 </section>
 
-<!-- ── MTR Banner ────────────────────────────────────────────── -->
+<!-- ── MTR Banner ── -->
 <div class="mtr-banner">
     <h2>2025 Mid-Term Review</h2>
     <p>
@@ -806,134 +584,15 @@
     </a>
 </div>
 
-<!-- ── Logistics ─────────────────────────────────────────────── -->
-<section class="logistics" id="logistics">
-    <div class="section-inner">
-        <h2 class="section-title">Practical Information</h2>
-        <div class="logistics-cols">
-            <div class="logistics-block">
-                <h3>Venue &amp; Access</h3>
-                <ul>
-                    <li>Campus MIL, Université de Montréal</li>
-                    <li>Same building complex as CASCA 2026</li>
-                    <li>No need to extend accommodation — one extra day</li>
-                </ul>
-            </div>
-            <div class="logistics-block">
-                <h3>Meals &amp; Refreshments</h3>
-                <ul>
-                    <li>Morning and afternoon coffee &amp; snacks provided</li>
-                    <li>Group lunch at a local restaurant</li>
-                    <li>Lunch reservation pending attendee count confirmation</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ── Schedule ──────────────────────────────────────────────── -->
-<section class="schedule" id="schedule">
-    <div class="section-inner">
-        <h2 class="section-title">Programme</h2>
-
-        <div class="day-row">
-            <div class="day-time">8:45</div>
-            <div class="day-content break-row">Welcome address — Organizers</div>
-        </div>
-        <div class="day-row">
-            <div class="day-time">9:00 – 10:30</div>
-            <div class="day-content">
-                <div class="session-card s1">
-                    <span class="sess-icon">🛰️</span>
-                    <span class="sess-title">Space-based instrumentation — Canadian-led &amp; international partnerships</span>
-                </div>
-            </div>
-        </div>
-        <div class="day-row">
-            <div class="day-time">10:30 – 10:50</div>
-            <div class="day-content break-row">Coffee break</div>
-        </div>
-        <div class="day-row">
-            <div class="day-time">10:50 – 12:20</div>
-            <div class="day-content">
-                <div class="session-card s2">
-                    <span class="sess-icon">🔭</span>
-                    <span class="sess-title">Canada's role in Very Large Optical Telescope instrumentation</span>
-                </div>
-            </div>
-        </div>
-        <div class="day-row">
-            <div class="day-time">12:20 – 13:30</div>
-            <div class="day-content break-row">Lunch — Campus MIL cafeteria</div>
-        </div>
-        <div class="day-row">
-            <div class="day-time">13:30 – 15:00</div>
-            <div class="day-content">
-                <div class="session-card s3">
-                    <span class="sess-icon">💾</span>
-                    <span class="sess-title">Data analysis &amp; valorisation — post-first-light support</span>
-                </div>
-            </div>
-        </div>
-        <div class="day-row">
-            <div class="day-time">15:00 – 15:20</div>
-            <div class="day-content break-row">Coffee break</div>
-        </div>
-        <div class="day-row">
-            <div class="day-time">15:20 – 16:50</div>
-            <div class="day-content">
-                <div class="session-card s4">
-                    <span class="sess-icon">🔧</span>
-                    <span class="sess-title">Canada-wide framework to support instrumentation teams</span>
-                </div>
-            </div>
-        </div>
-        <div class="day-row">
-            <div class="day-time">16:50 – 17:15</div>
-            <div class="day-content break-row">Wrap-up &amp; action items</div>
-        </div>
-
-        <a href="schedule.html" class="schedule-link">View full schedule with speakers →</a>
-    </div>
-</section>
-
-<!-- ── Organizers ────────────────────────────────────────────── -->
-<section class="organizers" id="organizers">
-    <div class="section-inner">
-        <h2 class="section-title">Organizing Committee</h2>
-        <p class="organizers-text">
-            The workshop is organized by a team of Canadian astronomers committed to growing and
-            strengthening the instrumentation community. The organizing committee is being finalized
-            and will be announced shortly.
-        </p>
-        <div class="organizers-note">
-            <strong>We welcome your involvement.</strong> If you have suggestions for discussion topics,
-            would like to help shape the agenda, or are interested in participating in the organizing
-            committee, please reach out. We look forward to seeing the community together in Montréal!
-        </div>
-
-        <div class="contact-card">
-            <div class="contact-icon">✉</div>
-            <div class="contact-body">
-                <div class="contact-name">Étienne Artigau</div>
-                <div class="contact-role">Contact &amp; Workshop Organizer · Université de Montréal</div>
-                <a class="contact-email" href="mailto:etienne.artigau@umontreal.ca">etienne.artigau@umontreal.ca</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ── Footer ───────────────────────────────────────────────── -->
+<!-- ── Footer ── -->
 <footer>
-    <p>
-        <strong style="color:rgba(255,255,255,0.85);">Canadian Astronomy Instrumentation Workshop 2026</strong>
-    </p>
-    <p>
-        Friday, 12 June 2026 &nbsp;·&nbsp; Campus MIL, Université de Montréal
-    </p>
+    <p><strong style="color:rgba(255,255,255,0.85);">Canadian Astronomy Instrumentation Workshop 2026</strong></p>
+    <p>Friday, 12 June 2026 &nbsp;·&nbsp; Campus MIL, Université de Montréal</p>
     <p style="margin-top:12px;">
         Held in conjunction with
         <a href="https://www.astro.umontreal.ca/casca2026/en/" target="_blank" rel="noopener">CASCA 2026</a>
+        &nbsp;·&nbsp;
+        <a href="logistics.html">Logistics &amp; Contact</a>
     </p>
 </footer>
 

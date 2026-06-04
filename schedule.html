@@ -51,6 +51,11 @@ nav {
   transition: color .2s;
 }
 .nav-links a:hover { color: var(--green); }
+.nav-links a.active {
+  color: var(--green);
+  padding-bottom: 3px;
+  border-bottom: 2px solid var(--green);
+}
 
 /* ── Page header ── */
 .page-header {
@@ -191,10 +196,10 @@ nav {
   <div class="nav-inner">
     <a class="nav-brand" href="index.html">CAIW 2026</a>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
       <li><a href="index.html#about">About</a></li>
-      <li><a href="index.html#venue">Venue</a></li>
-      <li><a href="schedule.html">Schedule</a></li>
+      <li><a href="index.html#topics">Topics</a></li>
+      <li><a href="schedule.html" class="active">Programme</a></li>
+      <li><a href="logistics.html">Logistics</a></li>
     </ul>
   </div>
 </nav>
@@ -217,7 +222,7 @@ nav {
 
 <div class="session-card" id="session1" style="--accent:#1a6b8a;--light:#e8f4f9;--bdr:#9ac8db">
   <div class="sc-header">
-    <div class="sc-icon">🛰️</div>
+    <div class="sc-icon">🏗️</div>
     <div class="sc-meta">
       <div class="sc-time">9:00 – 10:30 &nbsp;·&nbsp; 90 min</div>
       <h3 class="sc-title">Canada-wide framework to support instrumentation teams</h3>
@@ -249,7 +254,7 @@ nav {
 
 <div class="session-card" id="session2" style="--accent:#7a4a1e;--light:#f9f1eb;--bdr:#d4a97a">
   <div class="sc-header">
-    <div class="sc-icon">🔭</div>
+    <div class="sc-icon">🛰️</div>
     <div class="sc-meta">
       <div class="sc-time">10:50 – 12:20 &nbsp;·&nbsp; 90 min</div>
       <h3 class="sc-title">Space-based instrumentation — Canadian-led &amp; international partnerships</h3>
@@ -282,7 +287,7 @@ nav {
 
 <div class="session-card" id="session3" style="--accent:#2e5d7a;--light:#eaf2f7;--bdr:#8ab4cc">
   <div class="sc-header">
-    <div class="sc-icon">💾</div>
+    <div class="sc-icon">🔭</div>
     <div class="sc-meta">
       <div class="sc-time">13:30 – 15:00 &nbsp;·&nbsp; 90 min</div>
       <h3 class="sc-title">Canada&#x27;s role in Very Large Optical Telescopes &amp; Ground-based upcoming facilities</h3>
@@ -312,7 +317,7 @@ nav {
 
 <div class="session-card" id="session4" style="--accent:#4a2e7a;--light:#f1edf9;--bdr:#aa8ad4">
   <div class="sc-header">
-    <div class="sc-icon">🔧</div>
+    <div class="sc-icon">💾</div>
     <div class="sc-meta">
       <div class="sc-time">15:20 – 16:50 &nbsp;·&nbsp; 90 min</div>
       <h3 class="sc-title">Data analysis &amp; valorisation — post-first-light support</h3>
